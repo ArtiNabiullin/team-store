@@ -20,7 +20,19 @@
 
 //   return result;
 // }
+// import type { Item } from "./fetchItems"
 
-export function performFiltering(items, filters) {
+// interface Filters {
+//   search: string,
+//   category: string,
+//   minPrice: number | null,
+//   maxPrice: number | null,
+//   sort: string,
+// }
 
-}
+// export function performFiltering(items: Item[], filters: Filters) {
+//   const values = items;
+//   const search = 
+//   const category = 
+//   const sort = 
+// }
