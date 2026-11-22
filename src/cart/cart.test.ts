@@ -4,21 +4,38 @@ import {
 	decreaseQuantity,
 	increaseQuantity,
 	removeFromCart,
+	addToCart
 } from './cart'
 
-describe('increaseQuantity', () => {
+describe('addToCart', () => {
 	it('adds a new product to the cart with quantity 1', () => {
-		const result = increaseQuantity([], { id: 1, available: 5 })
+		const result = addToCart([], { id: 1, available: 5 })
 
 		expect(result).toEqual([{ id: 1, quantity: 1 }])
 	})
 
+	it('increases quantity when product already exists in cart', () => {
+		const cart = [{ id: 1, quantity: 2 }]
+
+		const result = addToCart(cart, { id: 1, available: 5 })
+
+		expect(result).toEqual([{ id: 1, quantity: 3 }])
+	})
+})
+
+describe('increaseQuantity', () => {
 	it('increases the quantity of an existing product', () => {
 		const cart = [{ id: 1, quantity: 2 }]
 
 		const result = increaseQuantity(cart, { id: 1, available: 5 })
 
 		expect(result).toEqual([{ id: 1, quantity: 3 }])
+	})
+
+	it('does not add a product that is not in the cart', () => {
+		const result = increaseQuantity([], { id: 1, available: 5 })
+
+		expect(result).toEqual([])
 	})
 
 	it('does not increase quantity beyond available stock', () => {
