@@ -1,3 +1,5 @@
+import type { Item } from "../fetchItems"
+
 export interface CartItem {
 	id: number
 	quantity: number
@@ -8,28 +10,46 @@ interface StockItem {
 	available: number
 }
 
-export function increaseQuantity(
+export function toStockItem(
+	item: Item
+): StockItem {
+	const result = {
+		id: item.id,
+		available: item.available
+	}
+
+	return result
+}
+
+export function addToCart(
 	cart: CartItem[],
 	product: StockItem
 ): CartItem[] {
 	const hasItem = cart.some((item) => item.id === product.id)
+	if (hasItem) {
+		return increaseQuantity(cart, product)
+	} else {
+		return [...cart, { id: product.id, quantity: 1 }]
+	}
+}
+
+export function increaseQuantity(
+	cart: CartItem[],
+	product: StockItem
+): CartItem[] {
 	let updatedCart: CartItem[] = []
 
-	if (hasItem) {
-		updatedCart = cart.map(item => {
-			if (item.id === product.id) {
-				if (item.quantity < product.available) {
-					return { ...item, quantity: item.quantity + 1 }
-				} else {
-					return item
-				}
+	updatedCart = cart.map(item => {
+		if (item.id === product.id) {
+			if (item.quantity < product.available) {
+				return { ...item, quantity: item.quantity + 1 }
 			} else {
 				return item
 			}
-		})
-	} else {
-		updatedCart = [...cart, { id: product.id, quantity: 1 }]
-	}
+		} else {
+			return item
+		}
+	})
 
 	return updatedCart
 }
