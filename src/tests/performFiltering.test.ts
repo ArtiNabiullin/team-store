@@ -35,6 +35,44 @@ describe('performFiltering', () => {
     expect(performFiltering(items, filters)).toEqual(items);
   });
 
+  it('После сортировки исходный массив items не изменился', () => {
+    const items = [
+      {
+        id: 0,
+        name: 'Плюшевый медведь',
+        description: '',
+        imageUrl: '',
+        available: 8,
+        category: 'soft-toys',
+        price: 35.99,
+      },
+      {
+        id: 1,
+        name: 'Детское домино',
+        description: '',
+        imageUrl: '',
+        available: 15,
+        category: 'educational-toys',
+        price: 9.99,
+      },
+    ];
+
+    const original = [...items];
+
+    const filters = {
+      search: '',
+      category: 'all',
+      minPrice: null,
+      maxPrice: null,
+      sort: 'asc',
+    };
+
+    const result = performFiltering(items, filters);
+
+    expect(items).toEqual(original);
+    expect(result).toEqual([items[1], items[0]]);
+  });
+
   it('Поиск находит часть названия без учёта регистра', () => {
     const items = [
       {

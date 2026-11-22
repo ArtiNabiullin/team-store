@@ -1,38 +1,44 @@
-// function getFiltered() {
-//   let result = [...products];
-//   const search = searchInput.value.toLowerCase().trim();
-//   const category = categorySelect.value;
-//   const sort = sortSelect.value;
+import type { Item } from "./fetchItems"
 
-//   if (search) {
-//     result = result.filter((p) => p.name.toLowerCase().includes(search));
-//   }
+interface Filters {
+  search: string,
+  category: string,
+  minPrice: number | null,
+  maxPrice: number | null,
+  sort: string,
+}
 
-//   if (category !== "all") {
-//     result = result.filter((p) => p.category === category);
-//   }
+export function performFiltering(items: Item[], filters: Filters) {
+  let values = [...items];
+  const search = filters.search.toLowerCase().trim();
+  const category = filters.category;
+  const sort = filters.sort;
+  const minPrice = filters.minPrice;
+  const maxPrice = filters.maxPrice;
 
-//   if (sort === "asc") {
-//     result.sort((a, b) => a.price - b.price);
-//   } else if (sort === "desc") {
-//     result.sort((a, b) => b.price - a.price);
-//   }
+  if (search) {
+    values = values.filter((a) => a.name.toLowerCase().includes(search));
+  }
 
-//   return result;
-// }
-// import type { Item } from "./fetchItems"
+  if (category !== 'all') {
+    values = values.filter((a) => a.category === category);
+  }
 
-// interface Filters {
-//   search: string,
-//   category: string,
-//   minPrice: number | null,
-//   maxPrice: number | null,
-//   sort: string,
-// }
+  if (minPrice !== null) {
+    values = values.filter((a) => a.price >= minPrice);
+  }
 
-// export function performFiltering(items: Item[], filters: Filters) {
-//   const values = items;
-//   const search = 
-//   const category = 
-//   const sort = 
-// }
+  if (maxPrice !== null) {
+    values = values.filter((a) => a.price <= maxPrice);
+  }
+
+  if (sort === 'asc') {
+    values.sort((a, b) => a.price - b.price);
+  }
+
+  if (sort === 'desc') {
+    values.sort((a, b) => b.price - a.price);
+  }
+
+  return values;
+}
