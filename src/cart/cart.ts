@@ -5,41 +5,22 @@ export interface CartItem {
 	quantity: number
 }
 
-interface StockItem {
-	id: number
-	available: number
-}
-
-export function toStockItem(
-	item: Item
-): StockItem {
-	const result = {
-		id: item.id,
-		available: item.available
-	}
-
-	return result
-}
-
 export function addToCart(
 	cart: CartItem[],
-	product: StockItem
+	product: Pick<Item, "id" | "available">
 ): CartItem[] {
 	const hasItem = cart.some((item) => item.id === product.id)
 	if (hasItem) {
 		return increaseQuantity(cart, product)
-	} else {
-		return [...cart, { id: product.id, quantity: 1 }]
 	}
+	return [...cart, { id: product.id, quantity: 1 }]
 }
 
 export function increaseQuantity(
 	cart: CartItem[],
-	product: StockItem
+	product: Pick<Item, "id" | "available">
 ): CartItem[] {
-	let updatedCart: CartItem[] = []
-
-	updatedCart = cart.map(item => {
+	const updatedCart = cart.map(item => {
 		if (item.id === product.id) {
 			if (item.quantity < product.available) {
 				return { ...item, quantity: item.quantity + 1 }
