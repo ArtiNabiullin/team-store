@@ -1,4 +1,4 @@
-import type { Item } from "./fetchItems"
+import type { Item } from "../fetchItems"
 
 interface Filters {
   search: string,
