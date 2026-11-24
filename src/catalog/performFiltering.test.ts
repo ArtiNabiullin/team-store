@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { performFiltering } from '../performFiltering'
+import { performFiltering } from './performFiltering'
 
 describe('performFiltering', () => {
 
