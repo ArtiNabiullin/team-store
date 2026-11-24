@@ -3,11 +3,13 @@ export function renderLayout(root: HTMLElement) {
   header.className = 'header';
 
   const logoLink = document.createElement('a');
-  logoLink.className = 'header-logo';
+  logoLink.className = 'header__logo';
   logoLink.href = '#about';
 
   const logoImage = document.createElement('img');
   logoImage.src = '/img/logo.jpg';
+  logoImage.alt = 'Team-store logo';
+  logoImage.className = 'logo__image';
 
   logoLink.append(logoImage);
 
@@ -16,14 +18,17 @@ export function renderLayout(root: HTMLElement) {
   nav.setAttribute('aria-label', 'Основная навигация');
 
   const aboutLink = document.createElement('a');
+  aboutLink.className = 'navigation__link';
   aboutLink.href = '#about';
   aboutLink.textContent = 'О нас';
 
   const catalogLink = document.createElement('a');
+  catalogLink.className = 'navigation__link';
   catalogLink.href = '#catalog';
   catalogLink.textContent = 'Каталог';
 
   const cartLink = document.createElement('a');
+  cartLink.className = 'navigation__link';
   cartLink.href = '#cart';
   cartLink.textContent = 'Корзина';
 
@@ -34,25 +39,25 @@ export function renderLayout(root: HTMLElement) {
   main.className = 'main';
 
   const mainContainer = document.createElement('div');
-  mainContainer.className = 'main-container';
+  mainContainer.className = 'main__container';
 
   const footer = document.createElement('footer');
   footer.className = 'footer';
 
   const dataCreation = document.createElement('p');
-  dataCreation.className = 'footer-data';
+  dataCreation.className = 'footer__data';
   dataCreation.textContent = String(new Date().getFullYear());
 
   const githubLinks = document.createElement('div');
-  githubLinks.className = 'footer-links';
+  githubLinks.className = 'footer__links';
 
   const arturLink = document.createElement('a');
-  arturLink.className = 'footer-link';
+  arturLink.className = 'footer__link';
   arturLink.textContent = 'Artur';
   arturLink.href = 'https://github.com/ArtiNabiullin';
 
   const alikLink = document.createElement('a');
-  alikLink.className = 'footer-link';
+  alikLink.className = 'footer__link';
   alikLink.textContent = 'Alik';
   alikLink.href = 'https://github.com/Oardieldei';
 

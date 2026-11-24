@@ -1,19 +1,51 @@
-import { renderLayout } from "./renderLayout";
+import { initFetchItem } from "./initFetchItem";
+import { renderAboutPage } from "./view/renderAboutPage";
+import { renderCatalogPage } from "./view/renderCatalogPage";
+import { renderLayout } from "./view/renderLayout";
+import type { Item } from "./fetchItems";
 
-const appRoot = document.getElementById('app');
+const appRoot = document.getElementById("app");
 
 if (!appRoot) {
-  throw new Error('Не найден корневой элемент #app');
+  throw new Error("Не найден корневой элемент #app");
 }
 
 const pageContent = renderLayout(appRoot);
+let cachedItems: Item[] | null = null;
 
-const aboutUs = document.createElement('h1');
-aboutUs.className = 'main-about';
-aboutUs.textContent = 'About us:';
+async function showCatalog(): Promise<void> {
+  pageContent.textContent = "Загружаем каталог...";
 
-const contribution = document.createElement('div');
-aboutUs.className = 'about__contribution';
-aboutUs.textContent = 'About us:';
+  try {
+    cachedItems ??= await initFetchItem();
 
-pageContent.append(aboutUs, contribution);
+    if (location.hash !== "#catalog") {
+      return;
+    }
+
+    renderCatalogPage(pageContent, cachedItems);
+  } catch (error) {
+    console.error("Не удалось загрузить каталог", error);
+
+    if (location.hash === "#catalog") {
+      pageContent.textContent =
+        "Не удалось загрузить каталог. Попробуйте обновить страницу.";
+    }
+  }
+}
+
+function renderRoute(): void {
+  if (location.hash === "#catalog") {
+    void showCatalog();
+    return;
+  }
+
+  if (location.hash === "#cart") {
+    pageContent.textContent = "";
+  }
+
+  renderAboutPage(pageContent);
+}
+
+window.addEventListener("hashchange", renderRoute);
+renderRoute();
