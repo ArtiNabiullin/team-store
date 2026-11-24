@@ -74,6 +74,8 @@ function createProductPricing(itemPrice: number, itemCount: number, itemAvailabl
 	itemCountIncrease.textContent = '+'
 	countWrapper.append(itemCountIncrease)
 
+	// добавить кнопку удаления
+
 	return wrapper
 }
 
