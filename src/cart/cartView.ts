@@ -93,7 +93,21 @@ function createSummary(total: number): HTMLDivElement {
 
 export async function createCartElement(): Promise<HTMLDivElement> {
 	const cart = loadCart()
-	// если нет товаров - отрисовать пустую
+	if (cart.length === 0) {
+		const cartElement = document.createElement('div')
+		cartElement.classList.add('cart__wrapper')
+
+		const productsWrapper = document.createElement('div')
+		productsWrapper.classList.add('cart__products')
+		productsWrapper.classList.add('empty_cart')
+		productsWrapper.textContent = 'Корзина пуста'
+
+		cartElement.append(productsWrapper)
+		cartElement.append(createSummary(0))
+
+		return cartElement
+	}
+
 	const products = await fetchItems()
 
 	let total = 0
