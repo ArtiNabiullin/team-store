@@ -1,19 +1,24 @@
+
 import type { Item } from '../fetchItems'
 
 import { loadCart } from './cartStorage'
 import { fetchItems } from '../fetchItems'
-/*import {
+import {
 	decreaseQuantity,
 	increaseQuantity,
 	removeFromCart
-} from './cart'*/
+} from './cart'
 
-function createProductElement(item: Item, itemCount: number): HTMLDivElement {
+function createProductElement(
+	item: Item,
+	itemCount: number,
+	cartElement: HTMLDivElement
+): HTMLDivElement {
 	const productCard = document.createElement('div')
 	productCard.classList.add('cart__product_card')
 	productCard.append(createProductImage(item.imageUrl))
 	productCard.append(createProductInfo(item.name, item.description))
-	productCard.append(createProductPricing(item.price, itemCount, item.available))
+	productCard.append(createProductPricing(item, itemCount, cartElement))
 
 	return productCard
 }
@@ -44,21 +49,32 @@ function createProductInfo(title: string, desc: string): HTMLDivElement {
 	return wrapper
 }
 
-function createProductPricing(itemPrice: number, itemCount: number, itemAvailable: number): HTMLDivElement {
+function createProductPricing(
+	item: Item,
+	itemCount: number,
+	cartElement: HTMLDivElement
+): HTMLDivElement {
 	const wrapper = document.createElement('div')
 	wrapper.classList.add('cart__product_pricing__wrapper')
 
 	const itemSumElement = document.createElement('p')
 	itemSumElement.classList.add('cart__product_pricing__sum')
-	itemSumElement.textContent = `$${itemPrice * itemCount}`
+	itemSumElement.textContent = `$${(item.price * itemCount).toFixed(2)}`
 	wrapper.append(itemSumElement)
 
-	wrapper.append(createButtons(itemCount, itemAvailable))
+	wrapper.append(createButtons(itemCount, item, itemSumElement, cartElement))
 
 	return wrapper
 }
 
-function createButtons(itemCount: number, itemAvailable: number): HTMLDivElement {
+function createButtons(
+	itemCount: number,
+	item: Item,
+	priceElem: HTMLParagraphElement,
+	cartElement: HTMLDivElement
+): HTMLDivElement {
+	let currentCount = itemCount
+
 	const buttonsWrapper = document.createElement('div')
 	buttonsWrapper.classList.add('cart__product_pricing__btns')
 
@@ -69,19 +85,17 @@ function createButtons(itemCount: number, itemAvailable: number): HTMLDivElement
 	itemCountDecrease.type = 'button'
 	itemCountDecrease.textContent = '-'
 	itemCountDecrease.setAttribute('aria-label', 'Уменьшить количество')
-	itemCountDecrease.disabled = itemCount <= 1
 	itemCountDecrease.classList.add('cart__product_pricing__count_decrease')
 	countWrapper.append(itemCountDecrease)
 
-	const itemCountNum = document.createElement('div')
+	const itemCountNum = document.createElement('span')
 	itemCountNum.classList.add('cart__product_pricing__count_num')
-	itemCountNum.textContent = `${String(itemCount)}`
+	itemCountNum.textContent = String(itemCount)
 	countWrapper.append(itemCountNum)
 
 	const itemCountIncrease = document.createElement('button')
 	itemCountIncrease.type = 'button'
 	itemCountIncrease.setAttribute('aria-label', 'Увеличить количество')
-	itemCountIncrease.disabled = itemCount >= itemAvailable
 	itemCountIncrease.classList.add('cart__product_pricing__count_increase')
 	itemCountIncrease.textContent = '+'
 	countWrapper.append(itemCountIncrease)
@@ -96,6 +110,58 @@ function createButtons(itemCount: number, itemAvailable: number): HTMLDivElement
 
 	buttonsWrapper.append(deleteButton)
 
+	function updateButtonsState(): void {
+		itemCountDecrease.disabled = currentCount <= 1
+		itemCountIncrease.disabled = currentCount >= item.available
+	}
+
+	updateButtonsState()
+
+	itemCountDecrease.addEventListener('click', () => {
+		if (currentCount > 1) {
+			decreaseQuantity(item.id)
+
+			currentCount -= 1
+			itemCountNum.textContent = String(currentCount)
+			priceElem.textContent = `$${(item.price * currentCount).toFixed(2)}`
+
+			updateSummary(cartElement)
+			updateButtonsState()
+		}
+	})
+
+	itemCountIncrease.addEventListener('click', () => {
+		if (currentCount < item.available) {
+			increaseQuantity(item)
+
+			currentCount += 1
+			itemCountNum.textContent = String(currentCount)
+			priceElem.textContent = `$${(item.price * currentCount).toFixed(2)}`
+
+			updateSummary(cartElement)
+			updateButtonsState()
+		}
+	})
+
+	deleteButton.addEventListener('click', () => {
+		const card = deleteButton.closest('.cart__product_card')
+		const productsWrapper = card?.parentElement
+
+		if (!card || !productsWrapper) return
+
+		removeFromCart(item.id)
+		card.remove()
+
+		updateSummary(cartElement)
+
+		const remainingCards = productsWrapper.querySelectorAll('.cart__product_card')
+
+		if (remainingCards.length === 0) {
+			productsWrapper.classList.add('empty_cart')
+			productsWrapper.textContent = 'Корзина пуста'
+		}
+	})
+
 	return buttonsWrapper
 }
 
@@ -105,20 +171,45 @@ function createSummary(total: number): HTMLDivElement {
 
 	const summaryText = document.createElement('span')
 	summaryText.classList.add('cart__summary_text')
-	summaryText.textContent = `Итого: $${total}`
+	summaryText.textContent = `Итого: $${total.toFixed(2)}`
 	summaryElement.append(summaryText)
 
 	return summaryElement
 }
 
+function calculateSummary(cartElement: HTMLDivElement): number {
+	const priceElements = cartElement.querySelectorAll('.cart__product_pricing__sum')
+	let total = 0
+
+	priceElements.forEach(elem => {
+		const price = Number(elem.textContent?.replace('$', '') ?? 0)
+
+		if (Number.isFinite(price)) {
+			total += price
+		}
+	})
+
+	return total
+}
+
+function updateSummary(cartElement: HTMLDivElement): void {
+	const summaryTextElem = cartElement.querySelector('.cart__summary_text')
+
+	if (!summaryTextElem) return
+
+	summaryTextElem.textContent = `Итого: $${calculateSummary(cartElement).toFixed(2)}`
+}
+
 export async function createCartElement(): Promise<HTMLDivElement> {
 	const cart = loadCart()
-	if (cart.length === 0) {
-		const cartElement = document.createElement('div')
-		cartElement.classList.add('cart__wrapper')
 
-		const productsWrapper = document.createElement('div')
-		productsWrapper.classList.add('cart__products')
+	const cartElement = document.createElement('div')
+	cartElement.classList.add('cart__wrapper')
+
+	const productsWrapper = document.createElement('div')
+	productsWrapper.classList.add('cart__products')
+
+	if (cart.length === 0) {
 		productsWrapper.classList.add('empty_cart')
 		productsWrapper.textContent = 'Корзина пуста'
 
@@ -132,20 +223,22 @@ export async function createCartElement(): Promise<HTMLDivElement> {
 
 	let total = 0
 
-	const cartElement = document.createElement('div')
-	cartElement.classList.add('cart__wrapper')
-
-	const productsWrapper = document.createElement('div')
-	productsWrapper.classList.add('cart__products')
-
 	cart.forEach(product => {
 		const item = products.find(element => element.id === product.id)
 
 		if (item !== undefined) {
-			productsWrapper.append(createProductElement(item, product.quantity))
+			productsWrapper.append(
+				createProductElement(item, product.quantity, cartElement)
+			)
+
 			total += item.price * product.quantity
 		}
 	})
+
+	if (productsWrapper.childElementCount === 0) {
+		productsWrapper.classList.add('empty_cart')
+		productsWrapper.textContent = 'Корзина пуста'
+	}
 
 	cartElement.append(productsWrapper)
 	cartElement.append(createSummary(total))
