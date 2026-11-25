@@ -46,7 +46,7 @@ export function renderLayout(root: HTMLElement) {
 
   const dataCreation = document.createElement('p');
   dataCreation.className = 'footer__data';
-  dataCreation.textContent = String(new Date().getFullYear());
+  dataCreation.textContent = '2026';
 
   const githubLinks = document.createElement('div');
   githubLinks.className = 'footer__links';
