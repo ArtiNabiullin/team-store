@@ -13,6 +13,7 @@ export function addToCart(
 	const hasItem = cart.some((item) => item.id === product.id)
 	if (hasItem) {
 		increaseQuantity(product)
+		return
 	}
 	const result = [...cart, { id: product.id, quantity: 1 }]
 	saveCart(result)
