@@ -1,6 +1,7 @@
 import type { Item } from "../fetchItems";
 import { renderItemCard } from "./renderItemCard";
 import { performFiltering } from "../catalog/performFiltering";
+import { getCategoryLabel } from "../catalog/categoryLabels";
 import { loadCart } from "../cart/cartStorage";
 
 export function renderCatalogPage(
@@ -38,17 +39,11 @@ export function renderCatalogPage(
   allCategoriesOption.textContent = "Все категории";
   categorySelect.append(allCategoriesOption);
 
-  const categoryLabels: Record<string, string> = {
-    "soft-toys": "Мягкие игрушки",
-    "educational-toys": "Развивающие игрушки",
-    vehicles: "Машинки",
-  };
-
   const categories = [...new Set(items.map((item) => item.category))];
   categories.forEach((category) => {
     const option = document.createElement("option");
     option.value = category;
-    option.textContent = categoryLabels[category] ?? category;
+    option.textContent = getCategoryLabel(category);
     categorySelect.append(option);
   });
   categoryLabel.append(categorySelect);

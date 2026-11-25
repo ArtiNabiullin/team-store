@@ -3,6 +3,7 @@ import type { Item } from "../fetchItems";
 import { loadCart } from "./cartStorage";
 import { fetchItems } from "../fetchItems";
 import { decreaseQuantity, increaseQuantity, removeFromCart } from "./cart";
+import { formatCurrency } from "../formatCurrency";
 
 function createProductElement(
   item: Item,
@@ -54,7 +55,9 @@ function createProductPricing(
 
   const itemSumElement = document.createElement("p");
   itemSumElement.classList.add("cart__product_pricing__sum");
-  itemSumElement.textContent = `$${(item.price * itemCount).toFixed(2)}`;
+  const itemTotal = item.price * itemCount;
+  itemSumElement.textContent = formatCurrency(itemTotal);
+  itemSumElement.dataset.total = String(itemTotal);
   wrapper.append(itemSumElement);
 
   wrapper.append(createButtons(itemCount, item, itemSumElement, cartElement));
@@ -118,7 +121,9 @@ function createButtons(
 
       currentCount -= 1;
       itemCountNum.textContent = String(currentCount);
-      priceElem.textContent = `$${(item.price * currentCount).toFixed(2)}`;
+      const itemTotal = item.price * currentCount;
+      priceElem.textContent = formatCurrency(itemTotal);
+      priceElem.dataset.total = String(itemTotal);
 
       updateSummary(cartElement);
       updateButtonsState();
@@ -131,7 +136,9 @@ function createButtons(
 
       currentCount += 1;
       itemCountNum.textContent = String(currentCount);
-      priceElem.textContent = `$${(item.price * currentCount).toFixed(2)}`;
+      const itemTotal = item.price * currentCount;
+      priceElem.textContent = formatCurrency(itemTotal);
+      priceElem.dataset.total = String(itemTotal);
 
       updateSummary(cartElement);
       updateButtonsState();
@@ -168,20 +175,20 @@ function createSummary(total: number): HTMLDivElement {
 
   const summaryText = document.createElement("span");
   summaryText.classList.add("cart__summary_text");
-  summaryText.textContent = `Итого: $${total.toFixed(2)}`;
+  summaryText.textContent = `Итого: ${formatCurrency(total)}`;
   summaryElement.append(summaryText);
 
   return summaryElement;
 }
 
 function calculateSummary(cartElement: HTMLDivElement): number {
-  const priceElements = cartElement.querySelectorAll(
+  const priceElements = cartElement.querySelectorAll<HTMLParagraphElement>(
     ".cart__product_pricing__sum",
   );
   let total = 0;
 
   priceElements.forEach((elem) => {
-    const price = Number(elem.textContent?.replace("$", "") ?? 0);
+    const price = Number(elem.dataset.total);
 
     if (Number.isFinite(price)) {
       total += price;
@@ -196,7 +203,7 @@ function updateSummary(cartElement: HTMLDivElement): void {
 
   if (!summaryTextElem) return;
 
-  summaryTextElem.textContent = `Итого: $${calculateSummary(cartElement).toFixed(2)}`;
+  summaryTextElem.textContent = `Итого: ${formatCurrency(calculateSummary(cartElement))}`;
 }
 
 export async function createCartElement(): Promise<HTMLDivElement> {
