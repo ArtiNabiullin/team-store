@@ -1,8 +1,12 @@
 import type { Item } from '../fetchItems'
-// import type { CartItem } from './cart'
 
-import { loadCart/*, saveCart*/ } from './cartStorage'
+import { loadCart } from './cartStorage'
 import { fetchItems } from '../fetchItems'
+/*import {
+	decreaseQuantity,
+	increaseQuantity,
+	removeFromCart
+} from './cart'*/
 
 function createProductElement(item: Item, itemCount: number): HTMLDivElement {
 	const productCard = document.createElement('div')
@@ -49,9 +53,17 @@ function createProductPricing(itemPrice: number, itemCount: number, itemAvailabl
 	itemSumElement.textContent = `$${itemPrice * itemCount}`
 	wrapper.append(itemSumElement)
 
+	wrapper.append(createButtons(itemCount, itemAvailable))
+
+	return wrapper
+}
+
+function createButtons(itemCount: number, itemAvailable: number): HTMLDivElement {
+	const buttonsWrapper = document.createElement('div')
+	buttonsWrapper.classList.add('cart__product_pricing__btns')
+
 	const countWrapper = document.createElement('div')
 	countWrapper.classList.add('cart__product_pricing__count__wrapper')
-	wrapper.append(countWrapper)
 
 	const itemCountDecrease = document.createElement('button')
 	itemCountDecrease.type = 'button'
@@ -74,9 +86,17 @@ function createProductPricing(itemPrice: number, itemCount: number, itemAvailabl
 	itemCountIncrease.textContent = '+'
 	countWrapper.append(itemCountIncrease)
 
-	// добавить кнопку удаления
+	buttonsWrapper.append(countWrapper)
 
-	return wrapper
+	const deleteButton = document.createElement('button')
+	deleteButton.type = 'button'
+	deleteButton.setAttribute('aria-label', 'Удалить из корзины')
+	deleteButton.classList.add('cart__product_pricing__delete_btn')
+	deleteButton.textContent = '🗑️'
+
+	buttonsWrapper.append(deleteButton)
+
+	return buttonsWrapper
 }
 
 function createSummary(total: number): HTMLDivElement {
