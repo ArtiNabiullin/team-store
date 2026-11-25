@@ -1,8 +1,9 @@
 import type { Item } from "../fetchItems";
 import { renderItemCard } from "./renderItemCard";
 import { performFiltering } from "../catalog/performFiltering";
+import { loadCart } from '../cart/cartStorage';
 
-export function renderCatalogPage(container: HTMLElement, items: Item[]): void {
+export function renderCatalogPage(container: HTMLElement, items: Item[], onBuy: (item: Item) => void): void {
   const heading = document.createElement("h1");
   heading.className = "catalog__title";
   heading.textContent = "Каталог товаров";
@@ -130,8 +131,10 @@ export function renderCatalogPage(container: HTMLElement, items: Item[]): void {
 
     cardsGrid.replaceChildren();
 
+    const cartIds = new Set(loadCart().map((cartItem) => cartItem.id));
+
     filteredItems.forEach((item) => {
-      cardsGrid.append(renderItemCard(item));
+      cardsGrid.append(renderItemCard(item, onBuy, cartIds.has(item.id)));
     })
   }
   

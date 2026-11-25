@@ -2,6 +2,8 @@ import { initFetchItem } from "./initFetchItem";
 import { renderAboutPage } from "./view/renderAboutPage";
 import { renderCatalogPage } from "./view/renderCatalogPage";
 import { renderLayout } from "./view/renderLayout";
+import { renderCartPage } from "./view/renderCartPage";
+import { addToCart } from "./cart/cart";
 import type { Item } from "./fetchItems";
 
 const appRoot = document.getElementById("app");
@@ -23,7 +25,7 @@ async function showCatalog(): Promise<void> {
       return;
     }
 
-    renderCatalogPage(pageContent, cachedItems);
+    renderCatalogPage(pageContent, cachedItems, addToCart);
   } catch (error) {
     console.error("Не удалось загрузить каталог", error);
 
@@ -41,7 +43,8 @@ function renderRoute(): void {
   }
 
   if (location.hash === "#cart") {
-    pageContent.textContent = "";
+    void renderCartPage(pageContent);
+    return;
   }
 
   renderAboutPage(pageContent);

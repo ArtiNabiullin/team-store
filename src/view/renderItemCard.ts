@@ -1,6 +1,6 @@
 import type { Item } from "../fetchItems";
 
-export function renderItemCard(item: Item): HTMLElement {
+export function renderItemCard(item: Item, onBuy: (item: Item) => void, isInCart: boolean): HTMLElement {
   const card = document.createElement('article');
   card.className = 'catalog__card';
 
@@ -21,6 +21,17 @@ export function renderItemCard(item: Item): HTMLElement {
   cardPrice.className = 'catalog__price';
   cardPrice.textContent = `${item.price} ₽`;
 
-  card.append(cardImage, cardName, cardDescription, cardPrice);
+  const cardButton = document.createElement('button');
+  cardButton.className = 'catalog__button';
+  cardButton.textContent = isInCart ? 'В корзине' : 'Купить';
+  cardButton.disabled = isInCart;
+
+  cardButton.addEventListener('click', () => {
+    onBuy(item);
+    cardButton.textContent = 'В корзине';
+    cardButton.disabled = true;
+  })
+
+  card.append(cardImage, cardName, cardDescription, cardPrice, cardButton);
   return card;
 }
