@@ -1,3 +1,5 @@
+import "./style.css";
+
 import { initFetchItem } from "./initFetchItem";
 import { renderAboutPage } from "./view/renderAboutPage";
 import { renderCatalogPage } from "./view/renderCatalogPage";
