@@ -15,7 +15,7 @@
     "imageUrl": "/img/id1.jpg",
     "available": 12,
     "category": "soft-toys",
-    "price": 24.50
+    "price": 24.5
   },
   {
     "id": 2,
@@ -33,7 +33,7 @@
     "imageUrl": "/img/id3.jpg",
     "available": 3,
     "category": "soft-toys",
-    "price": 32.00
+    "price": 32.0
   },
   {
     "id": 4,
@@ -60,7 +60,7 @@
     "imageUrl": "/img/id6.jpg",
     "available": 9,
     "category": "soft-toys",
-    "price": 27.50
+    "price": 27.5
   },
   {
     "id": 7,
@@ -69,7 +69,7 @@
     "imageUrl": "/img/id7.jpg",
     "available": 4,
     "category": "educational-toys",
-    "price": 45.00
+    "price": 45.0
   },
   {
     "id": 8,
@@ -87,7 +87,7 @@
     "imageUrl": "/img/id9.jpg",
     "available": 7,
     "category": "educational-toys",
-    "price": 12.50
+    "price": 12.5
   },
   {
     "id": 10,
@@ -114,7 +114,7 @@
     "imageUrl": "/img/id12.jpg",
     "available": 10,
     "category": "educational-toys",
-    "price": 7.50
+    "price": 7.5
   },
   {
     "id": 13,
@@ -141,7 +141,7 @@
     "imageUrl": "/img/id15.jpg",
     "available": 5,
     "category": "vehicles",
-    "price": 22.50
+    "price": 22.5
   },
   {
     "id": 16,
@@ -168,7 +168,7 @@
     "imageUrl": "/img/id18.jpg",
     "available": 1,
     "category": "vehicles",
-    "price": 31.50
+    "price": 31.5
   },
   {
     "id": 19,

@@ -1,8 +1,14 @@
 import type { Item } from "../fetchItems";
 import { renderItemCard } from "./renderItemCard";
 import { performFiltering } from "../catalog/performFiltering";
+import { getCategoryLabel } from "../catalog/categoryLabels";
+import { loadCart } from "../cart/cartStorage";
 
-export function renderCatalogPage(container: HTMLElement, items: Item[]): void {
+export function renderCatalogPage(
+  container: HTMLElement,
+  items: Item[],
+  onBuy: (item: Item) => void,
+): void {
   const heading = document.createElement("h1");
   heading.className = "catalog__title";
   heading.textContent = "Каталог товаров";
@@ -33,17 +39,11 @@ export function renderCatalogPage(container: HTMLElement, items: Item[]): void {
   allCategoriesOption.textContent = "Все категории";
   categorySelect.append(allCategoriesOption);
 
-  const categoryLabels: Record<string, string> = {
-    "soft-toys": "Мягкие игрушки",
-    "educational-toys": "Развивающие игрушки",
-    vehicles: "Машинки",
-  };
-
   const categories = [...new Set(items.map((item) => item.category))];
   categories.forEach((category) => {
     const option = document.createElement("option");
     option.value = category;
-    option.textContent = categoryLabels[category] ?? category;
+    option.textContent = getCategoryLabel(category);
     categorySelect.append(option);
   });
   categoryLabel.append(categorySelect);
@@ -119,8 +119,10 @@ export function renderCatalogPage(container: HTMLElement, items: Item[]): void {
     const filters = {
       search: searchInput.value,
       category: categorySelect.value,
-      minPrice: minPriceInput.value.trim() === '' ? null : Number(minPriceInput.value),
-      maxPrice: maxPriceInput.value.trim() === '' ? null : Number(maxPriceInput.value),
+      minPrice:
+        minPriceInput.value.trim() === "" ? null : Number(minPriceInput.value),
+      maxPrice:
+        maxPriceInput.value.trim() === "" ? null : Number(maxPriceInput.value),
       sort: sortSelect.value,
     };
 
@@ -130,27 +132,28 @@ export function renderCatalogPage(container: HTMLElement, items: Item[]): void {
 
     cardsGrid.replaceChildren();
 
-    filteredItems.forEach((item) => {
-      cardsGrid.append(renderItemCard(item));
-    })
-  }
-  
-  searchInput.addEventListener('input', updateCards);
-  minPriceInput.addEventListener('input', updateCards);
-  maxPriceInput.addEventListener('input', updateCards);
-  categorySelect.addEventListener('change', updateCards);
-  sortSelect.addEventListener('change', updateCards);
+    const cartIds = new Set(loadCart().map((cartItem) => cartItem.id));
 
-  resetButton.addEventListener('click', () => {
-    searchInput.value = '';
-    minPriceInput.value = '';
-    maxPriceInput.value = '';
-    categorySelect.value = 'all';
-    sortSelect.value = 'original';
+    filteredItems.forEach((item) => {
+      cardsGrid.append(renderItemCard(item, onBuy, cartIds.has(item.id)));
+    });
+  }
+
+  searchInput.addEventListener("input", updateCards);
+  minPriceInput.addEventListener("input", updateCards);
+  maxPriceInput.addEventListener("input", updateCards);
+  categorySelect.addEventListener("change", updateCards);
+  sortSelect.addEventListener("change", updateCards);
+
+  resetButton.addEventListener("click", () => {
+    searchInput.value = "";
+    minPriceInput.value = "";
+    maxPriceInput.value = "";
+    categorySelect.value = "all";
+    sortSelect.value = "original";
 
     updateCards();
-  })
+  });
 
   updateCards();
 }
-

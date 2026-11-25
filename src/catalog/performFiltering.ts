@@ -1,11 +1,11 @@
-import type { Item } from "../fetchItems"
+import type { Item } from "../fetchItems";
 
 interface Filters {
-  search: string,
-  category: string,
-  minPrice: number | null,
-  maxPrice: number | null,
-  sort: string,
+  search: string;
+  category: string;
+  minPrice: number | null;
+  maxPrice: number | null;
+  sort: string;
 }
 
 export function performFiltering(items: Item[], filters: Filters) {
@@ -20,7 +20,7 @@ export function performFiltering(items: Item[], filters: Filters) {
     values = values.filter((a) => a.name.toLowerCase().includes(search));
   }
 
-  if (category !== 'all') {
+  if (category !== "all") {
     values = values.filter((a) => a.category === category);
   }
 
@@ -32,11 +32,11 @@ export function performFiltering(items: Item[], filters: Filters) {
     values = values.filter((a) => a.price <= maxPrice);
   }
 
-  if (sort === 'asc') {
+  if (sort === "asc") {
     values.sort((a, b) => a.price - b.price);
   }
 
-  if (sort === 'desc') {
+  if (sort === "desc") {
     values.sort((a, b) => b.price - a.price);
   }
 

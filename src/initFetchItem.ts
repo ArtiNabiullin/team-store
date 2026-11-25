@@ -5,6 +5,6 @@ export async function initFetchItem() {
     const items: Item[] = await fetchItems();
     return items;
   } catch (error) {
-    throw new Error('Ошибка при получении данных');
+    throw new Error("Ошибка при получении данных");
   }
 }
