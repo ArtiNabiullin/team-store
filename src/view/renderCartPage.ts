@@ -1,7 +1,7 @@
-import { createCartElement } from "../cart/cartView"
+import { createCartElement } from "../cart/cartView";
 
 export async function renderCartPage(container: HTMLElement): Promise<void> {
-  const cartElement = await createCartElement()
+  const cartElement = await createCartElement();
 
-  container.replaceChildren(cartElement)
+  container.replaceChildren(cartElement);
 }

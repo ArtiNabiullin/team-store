@@ -1,9 +1,13 @@
 import type { Item } from "../fetchItems";
 import { renderItemCard } from "./renderItemCard";
 import { performFiltering } from "../catalog/performFiltering";
-import { loadCart } from '../cart/cartStorage';
+import { loadCart } from "../cart/cartStorage";
 
-export function renderCatalogPage(container: HTMLElement, items: Item[], onBuy: (item: Item) => void): void {
+export function renderCatalogPage(
+  container: HTMLElement,
+  items: Item[],
+  onBuy: (item: Item) => void,
+): void {
   const heading = document.createElement("h1");
   heading.className = "catalog__title";
   heading.textContent = "Каталог товаров";
@@ -120,8 +124,10 @@ export function renderCatalogPage(container: HTMLElement, items: Item[], onBuy: 
     const filters = {
       search: searchInput.value,
       category: categorySelect.value,
-      minPrice: minPriceInput.value.trim() === '' ? null : Number(minPriceInput.value),
-      maxPrice: maxPriceInput.value.trim() === '' ? null : Number(maxPriceInput.value),
+      minPrice:
+        minPriceInput.value.trim() === "" ? null : Number(minPriceInput.value),
+      maxPrice:
+        maxPriceInput.value.trim() === "" ? null : Number(maxPriceInput.value),
       sort: sortSelect.value,
     };
 
@@ -135,25 +141,24 @@ export function renderCatalogPage(container: HTMLElement, items: Item[], onBuy: 
 
     filteredItems.forEach((item) => {
       cardsGrid.append(renderItemCard(item, onBuy, cartIds.has(item.id)));
-    })
+    });
   }
-  
-  searchInput.addEventListener('input', updateCards);
-  minPriceInput.addEventListener('input', updateCards);
-  maxPriceInput.addEventListener('input', updateCards);
-  categorySelect.addEventListener('change', updateCards);
-  sortSelect.addEventListener('change', updateCards);
 
-  resetButton.addEventListener('click', () => {
-    searchInput.value = '';
-    minPriceInput.value = '';
-    maxPriceInput.value = '';
-    categorySelect.value = 'all';
-    sortSelect.value = 'original';
+  searchInput.addEventListener("input", updateCards);
+  minPriceInput.addEventListener("input", updateCards);
+  maxPriceInput.addEventListener("input", updateCards);
+  categorySelect.addEventListener("change", updateCards);
+  sortSelect.addEventListener("change", updateCards);
+
+  resetButton.addEventListener("click", () => {
+    searchInput.value = "";
+    minPriceInput.value = "";
+    maxPriceInput.value = "";
+    categorySelect.value = "all";
+    sortSelect.value = "original";
 
     updateCards();
-  })
+  });
 
   updateCards();
 }
-

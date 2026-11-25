@@ -28,13 +28,19 @@ export function renderAboutPage(container: HTMLElement): void {
 
   const teamButton = document.createElement("button");
   teamButton.className = "about__button";
-  teamButton.type = 'button';
-  teamButton.textContent = 'Перейти в каталог';
+  teamButton.type = "button";
+  teamButton.textContent = "Перейти в каталог";
 
-  teamButton.addEventListener('click', () => {
-    window.location.hash = '#catalog';
+  teamButton.addEventListener("click", () => {
+    window.location.hash = "#catalog";
   });
 
   team.append(arturContribution, alikContribution);
-  container.replaceChildren(aboutUs, projectDescription, teamHeading, team, teamButton);
+  container.replaceChildren(
+    aboutUs,
+    projectDescription,
+    teamHeading,
+    team,
+    teamButton,
+  );
 }
