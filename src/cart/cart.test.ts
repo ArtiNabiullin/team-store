@@ -1,95 +1,126 @@
 
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
-	decreaseQuantity,
+	addToCart,
 	increaseQuantity,
-	removeFromCart,
-	addToCart
+	decreaseQuantity,
+	removeFromCart
 } from './cart'
+import { loadCart } from './cartStorage'
+import type { CartItem } from './cart'
+
+let storageData: Map<string, string>
+
+function setStoredCart(cart: CartItem[]): void {
+	localStorage.setItem('cart', JSON.stringify(cart))
+}
+
+beforeEach(() => {
+	storageData = new Map()
+
+	vi.stubGlobal('localStorage', {
+		getItem: (key: string) => storageData.get(key) ?? null,
+		setItem: (key: string, value: string) => storageData.set(key, value)
+	})
+})
+
+afterEach(() => {
+	vi.unstubAllGlobals()
+})
 
 describe('addToCart', () => {
 	it('adds a new product to the cart with quantity 1', () => {
-		const result = addToCart([], { id: 1, available: 5 })
+		addToCart({ id: 1, available: 5 })
 
-		expect(result).toEqual([{ id: 1, quantity: 1 }])
+		expect(loadCart()).toEqual([{ id: 1, quantity: 1 }])
 	})
 
 	it('increases quantity when product already exists in cart', () => {
-		const cart = [{ id: 1, quantity: 2 }]
+		setStoredCart([{ id: 1, quantity: 2 }])
 
-		const result = addToCart(cart, { id: 1, available: 5 })
+		addToCart({ id: 1, available: 5 })
 
-		expect(result).toEqual([{ id: 1, quantity: 3 }])
+		expect(loadCart()).toEqual([{ id: 1, quantity: 3 }])
+	})
+
+	it('does not increase quantity beyond available stock', () => {
+		setStoredCart([{ id: 1, quantity: 2 }])
+
+		addToCart({ id: 1, available: 2 })
+
+		expect(loadCart()).toEqual([{ id: 1, quantity: 2 }])
 	})
 })
 
 describe('increaseQuantity', () => {
 	it('increases the quantity of an existing product', () => {
-		const cart = [{ id: 1, quantity: 2 }]
+		setStoredCart([{ id: 1, quantity: 2 }])
 
-		const result = increaseQuantity(cart, { id: 1, available: 5 })
+		increaseQuantity({ id: 1, available: 5 })
 
-		expect(result).toEqual([{ id: 1, quantity: 3 }])
+		expect(loadCart()).toEqual([{ id: 1, quantity: 3 }])
 	})
 
-	it('does not add a product that is not in the cart', () => {
-		const result = increaseQuantity([], { id: 1, available: 5 })
+	it('does not change the cart when product is not found', () => {
+		setStoredCart([{ id: 2, quantity: 1 }])
 
-		expect(result).toEqual([])
+		increaseQuantity({ id: 1, available: 5 })
+
+		expect(loadCart()).toEqual([{ id: 2, quantity: 1 }])
 	})
 
 	it('does not increase quantity beyond available stock', () => {
-		const cart = [{ id: 1, quantity: 2 }]
+		setStoredCart([{ id: 1, quantity: 2 }])
 
-		const result = increaseQuantity(cart, { id: 1, available: 2 })
+		increaseQuantity({ id: 1, available: 2 })
 
-		expect(result).toEqual([{ id: 1, quantity: 2 }])
+		expect(loadCart()).toEqual([{ id: 1, quantity: 2 }])
 	})
 })
 
 describe('decreaseQuantity', () => {
 	it('decreases the quantity of a product', () => {
-		const cart = [{ id: 1, quantity: 3 }]
+		setStoredCart([{ id: 1, quantity: 3 }])
 
-		const result = decreaseQuantity(cart, 1)
+		decreaseQuantity(1)
 
-		expect(result).toEqual([{ id: 1, quantity: 2 }])
+		expect(loadCart()).toEqual([{ id: 1, quantity: 2 }])
 	})
 
 	it('does not decrease quantity below 1', () => {
-		const cart = [{ id: 1, quantity: 1 }]
+		setStoredCart([{ id: 1, quantity: 1 }])
 
-		const result = decreaseQuantity(cart, 1)
+		decreaseQuantity(1)
 
-		expect(result).toEqual([{ id: 1, quantity: 1 }])
+		expect(loadCart()).toEqual([{ id: 1, quantity: 1 }])
 	})
 
-	it('does not mutate the original cart', () => {
-		const cart = [{ id: 1, quantity: 2 }]
+	it('does not change the cart when product is not found', () => {
+		setStoredCart([{ id: 1, quantity: 2 }])
 
-		decreaseQuantity(cart, 1)
+		decreaseQuantity(999)
 
-		expect(cart).toEqual([{ id: 1, quantity: 2 }])
+		expect(loadCart()).toEqual([{ id: 1, quantity: 2 }])
 	})
 })
 
 describe('removeFromCart', () => {
 	it('removes a product from the cart', () => {
-		const cart = [
+		setStoredCart([
 			{ id: 1, quantity: 2 },
-			{ id: 2, quantity: 1 },
-		]
+			{ id: 2, quantity: 1 }
+		])
 
-		const result = removeFromCart(cart, 1)
+		removeFromCart(1)
 
-		expect(result).toEqual([{ id: 2, quantity: 1 }])
+		expect(loadCart()).toEqual([{ id: 2, quantity: 1 }])
 	})
 
-	it('does not change the cart when the product is not found', () => {
-		const cart = [{ id: 1, quantity: 2 }]
+	it('does not change the cart when product is not found', () => {
+		setStoredCart([{ id: 1, quantity: 2 }])
 
-		const result = removeFromCart(cart, 999)
+		removeFromCart(999)
 
-		expect(result).toEqual([{ id: 1, quantity: 2 }])
+		expect(loadCart()).toEqual([{ id: 1, quantity: 2 }])
 	})
 })
