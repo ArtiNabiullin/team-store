@@ -3,7 +3,7 @@
     "id": 0,
     "name": "Плюшевый медведь",
     "description": "Мягкий коричневый медведь с бантиком на шее.",
-    "imageUrl": "/img/id0.jpg",
+    "imageUrl": "img/id0.jpg",
     "available": 8,
     "category": "soft-toys",
     "price": 35.99
@@ -12,7 +12,7 @@
     "id": 1,
     "name": "Плюшевый кролик",
     "description": "Мягкий белый кролик с длинными ушами.",
-    "imageUrl": "/img/id1.jpg",
+    "imageUrl": "img/id1.jpg",
     "available": 12,
     "category": "soft-toys",
     "price": 24.5
@@ -21,7 +21,7 @@
     "id": 2,
     "name": "Игрушечный динозавр",
     "description": "Зелёный плюшевый динозавр с короткими лапами.",
-    "imageUrl": "/img/id2.jpg",
+    "imageUrl": "img/id2.jpg",
     "available": 5,
     "category": "soft-toys",
     "price": 29.99
@@ -30,7 +30,7 @@
     "id": 3,
     "name": "Плюшевая панда",
     "description": "Мягкая чёрно-белая панда с милой мордочкой.",
-    "imageUrl": "/img/id3.jpg",
+    "imageUrl": "img/id3.jpg",
     "available": 3,
     "category": "soft-toys",
     "price": 32.0
@@ -39,7 +39,7 @@
     "id": 4,
     "name": "Игрушечный кот",
     "description": "Серый плюшевый кот с вышитыми глазами.",
-    "imageUrl": "/img/id4.jpg",
+    "imageUrl": "img/id4.jpg",
     "available": 14,
     "category": "soft-toys",
     "price": 19.99
@@ -48,7 +48,7 @@
     "id": 5,
     "name": "Плюшевый единорог",
     "description": "Разноцветный единорог с блестящим рогом.",
-    "imageUrl": "/img/id5.jpg",
+    "imageUrl": "img/id5.jpg",
     "available": 6,
     "category": "soft-toys",
     "price": 39.99
@@ -57,7 +57,7 @@
     "id": 6,
     "name": "Плюшевый лисёнок",
     "description": "Рыжий мягкий лисёнок с белой грудкой.",
-    "imageUrl": "/img/id6.jpg",
+    "imageUrl": "img/id6.jpg",
     "available": 9,
     "category": "soft-toys",
     "price": 27.5
@@ -66,7 +66,7 @@
     "id": 7,
     "name": "Развивающий куб",
     "description": "Многофункциональный куб с кнопками, шестерёнками и фигурками.",
-    "imageUrl": "/img/id7.jpg",
+    "imageUrl": "img/id7.jpg",
     "available": 4,
     "category": "educational-toys",
     "price": 45.0
@@ -75,7 +75,7 @@
     "id": 8,
     "name": "Деревянные кубики",
     "description": "Набор из 30 разноцветных деревянных строительных кубиков.",
-    "imageUrl": "/img/id8.jpg",
+    "imageUrl": "img/id8.jpg",
     "available": 11,
     "category": "educational-toys",
     "price": 18.99
@@ -84,7 +84,7 @@
     "id": 9,
     "name": "Пазл с животными",
     "description": "Детский пазл из 60 элементов с изображениями животных.",
-    "imageUrl": "/img/id9.jpg",
+    "imageUrl": "img/id9.jpg",
     "available": 7,
     "category": "educational-toys",
     "price": 12.5
@@ -93,7 +93,7 @@
     "id": 10,
     "name": "Магнитный конструктор",
     "description": "Набор магнитных деталей для создания объёмных фигур.",
-    "imageUrl": "/img/id10.jpg",
+    "imageUrl": "img/id10.jpg",
     "available": 2,
     "category": "educational-toys",
     "price": 54.99
@@ -102,7 +102,7 @@
     "id": 11,
     "name": "Детское домино",
     "description": "Классическая игра с крупными яркими костяшками.",
-    "imageUrl": "/img/id11.jpg",
+    "imageUrl": "img/id11.jpg",
     "available": 15,
     "category": "educational-toys",
     "price": 9.99
@@ -111,7 +111,7 @@
     "id": 12,
     "name": "Счётные палочки",
     "description": "Набор цветных палочек для изучения счёта и математики.",
-    "imageUrl": "/img/id12.jpg",
+    "imageUrl": "img/id12.jpg",
     "available": 10,
     "category": "educational-toys",
     "price": 7.5
@@ -120,7 +120,7 @@
     "id": 13,
     "name": "Детский конструктор",
     "description": "Набор пластиковых деталей для сборки различных моделей.",
-    "imageUrl": "/img/id13.jpg",
+    "imageUrl": "img/id13.jpg",
     "available": 13,
     "category": "educational-toys",
     "price": 34.99
@@ -129,7 +129,7 @@
     "id": 14,
     "name": "Красная гоночная машина",
     "description": "Металлическая машинка с открывающимися дверями.",
-    "imageUrl": "/img/id14.jpg",
+    "imageUrl": "img/id14.jpg",
     "available": 8,
     "category": "vehicles",
     "price": 14.99
@@ -138,7 +138,7 @@
     "id": 15,
     "name": "Пожарная машина",
     "description": "Игрушечная пожарная машина с выдвижной лестницей.",
-    "imageUrl": "/img/id15.jpg",
+    "imageUrl": "img/id15.jpg",
     "available": 5,
     "category": "vehicles",
     "price": 22.5
@@ -147,7 +147,7 @@
     "id": 16,
     "name": "Полицейский вертолёт",
     "description": "Пластиковый вертолёт с вращающимися лопастями.",
-    "imageUrl": "/img/id16.jpg",
+    "imageUrl": "img/id16.jpg",
     "available": 3,
     "category": "vehicles",
     "price": 17.99
@@ -156,7 +156,7 @@
     "id": 17,
     "name": "Синий трактор",
     "description": "Игрушечный трактор с большими колёсами и подвижным ковшом.",
-    "imageUrl": "/img/id17.jpg",
+    "imageUrl": "img/id17.jpg",
     "available": 6,
     "category": "vehicles",
     "price": 26.99
@@ -165,7 +165,7 @@
     "id": 18,
     "name": "Грузовик с прицепом",
     "description": "Большой пластиковый грузовик с отсоединяемым прицепом.",
-    "imageUrl": "/img/id18.jpg",
+    "imageUrl": "img/id18.jpg",
     "available": 1,
     "category": "vehicles",
     "price": 31.5
@@ -174,7 +174,7 @@
     "id": 19,
     "name": "Жёлтый школьный автобус",
     "description": "Миниатюрная модель школьного автобуса с подвижными колёсами.",
-    "imageUrl": "/img/id19.jpg",
+    "imageUrl": "img/id19.jpg",
     "available": 12,
     "category": "vehicles",
     "price": 16.99
