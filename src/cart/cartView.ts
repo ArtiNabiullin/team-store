@@ -163,6 +163,7 @@ function createButtons(
     if (remainingCards.length === 0) {
       productsWrapper.classList.add("empty_cart");
       productsWrapper.textContent = "Корзина пуста";
+			cartElement.querySelector(".cart__pay_button")?.remove();
     }
   });
 
@@ -177,6 +178,17 @@ function createSummary(total: number): HTMLDivElement {
   summaryText.classList.add("cart__summary_text");
   summaryText.textContent = `Итого: ${formatCurrency(total)}`;
   summaryElement.append(summaryText);
+
+  if (total > 0) {
+    const payButton = document.createElement("a");
+    payButton.classList.add("cart__pay_button");
+    payButton.textContent = "Оплатить";
+    payButton.href = "https://youtu.be/dQw4w9WgXcQ";
+    payButton.target = "_blank";
+    payButton.rel = "noopener noreferrer";
+
+    summaryElement.append(payButton);
+  }
 
   return summaryElement;
 }
